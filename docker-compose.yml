@@ -1,6 +1,7 @@
 version: '2'
 services:
   nginx-proxy:
+    network_mode: 'bridge'
     image: jwilder/nginx-proxy
     container_name: nginx-proxy
     ports:
@@ -9,6 +10,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   whoami:
+    network_mode: 'bridge'
     image: jwilder/whoami
     environment:
       - VIRTUAL_HOST=whoami.local
