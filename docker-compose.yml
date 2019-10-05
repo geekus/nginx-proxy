@@ -8,14 +8,14 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - /etc/nginx/certs
+      # - /etc/nginx/certs
       - /etc/nginx/vhost.d
       - /usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./certs:/etc/nginx/certs
 
-
   letsencrypt-nginx-proxy-companion:
+    network_mode: 'bridge'
     image: jrcs/letsencrypt-nginx-proxy-companion
     container_name: nginx-proxy-letsencrypt
     volumes_from:
@@ -23,14 +23,22 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
-  # test:
-  #   image: jwilder/whoami
-  #   environment:
-  #     - VIRTUAL_HOST=m24.eple.me
-  #     - LETSENCRYPT_HOST=m24.eple.me
-  #     - LETSENCRYPT_EMAIL=havard.ranum@gmail.com
+  local-eple-local:
+    network_mode: 'bridge'
+    image: jwilder/whoami
+    environment:
+      - VIRTUAL_HOST=local.eple.local
 
-  m24proxy:
+  local-eple-me:
+    network_mode: 'bridge'
+    image: jwilder/whoami
+    environment:
+      - VIRTUAL_HOST=local.eple.me
+      - LETSENCRYPT_HOST=local.eple.me
+      - LETSENCRYPT_EMAIL=havard.ranum@gmail.com
+
+  m24-eple-me:
+    network_mode: 'bridge'
     image: nginx:latest
     volumes:
       - ./conf:/etc/nginx/conf.d
@@ -39,7 +47,8 @@ services:
       - LETSENCRYPT_HOST=m24.eple.me
       - LETSENCRYPT_EMAIL=havard.ranum@gmail.com
 
-  m24-eple:
+  eple-m24-eple-me:
+    network_mode: 'bridge'
     image: nginx:latest
     volumes:
       - ./eple:/etc/nginx/conf.d
