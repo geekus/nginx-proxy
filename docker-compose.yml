@@ -1,6 +1,7 @@
 version: '2'
 services:
   nginx-proxy:
+    network_mode: 'bridge'
     image: jwilder/nginx-proxy
     container_name: nginx-proxy
     ports:
@@ -11,11 +12,7 @@ services:
       - /etc/nginx/vhost.d
       - /usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
-
-  # whoami:
-  #   image: jwilder/whoami
-  #   environment:
-  #     - VIRTUAL_HOST=whoami.local
+      - ./certs:/etc/nginx/certs
 
 
   letsencrypt-nginx-proxy-companion:

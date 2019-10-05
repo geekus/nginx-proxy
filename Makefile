@@ -1,14 +1,16 @@
 .SILENT :
-.PHONY : test
+.PHONY : test-debian test-alpine test
+
 
 update-dependencies:
-	docker pull jwilder/docker-gen:0.7.3
-	docker pull nginx:1.11.3
-	docker pull python:3
-	docker pull rancher/socat-docker:latest
-	docker pull appropriate/curl:latest
-	docker pull docker:1.10
+	test/requirements/build.sh
 
-test:
-	docker build -t jwilder/nginx-proxy:bats .
-	bats test
+test-debian: update-dependencies
+	docker build -t jwilder/nginx-proxy:test .
+	test/pytest.sh
+
+test-alpine: update-dependencies
+	docker build -f Dockerfile.alpine -t jwilder/nginx-proxy:test .
+	test/pytest.sh
+
+test: test-debian test-alpine
