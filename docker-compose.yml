@@ -33,6 +33,8 @@ services:
   local-eple-me:
     network_mode: 'bridge'
     image: jwilder/whoami
+    # ports:
+    #   - "43210:80"
     environment:
       - VIRTUAL_HOST=local.eple.me
       - LETSENCRYPT_HOST=local.eple.me
@@ -57,3 +59,4 @@ services:
       - VIRTUAL_HOST=eple.m24.eple.me
       - LETSENCRYPT_HOST=eple.m24.eple.me
       - LETSENCRYPT_EMAIL=havard.ranum@gmail.com
+      - VIRTUAL_HOST=whoami.local
